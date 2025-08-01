@@ -116,7 +116,7 @@ export default function Home({ setState }: HomeProps) {
               if (tracks.length > 0) {
                 const response = await internalRequests.saveAlbumRanking(
                   tracks,
-                  trackData?.url || "",
+                  trackData?.image[2]["#text"] || "",
                   artist,
                   album
                 );
