@@ -112,14 +112,36 @@ export default function Home({ setState }: HomeProps) {
         </div>
         <div id="right" className="flex items-center gap-4">
           <Button
-            onClick={() => {
+            onClick={async () => {
               if (tracks.length > 0) {
-                internalRequests.saveAlbumRanking(
+                const response = await internalRequests.saveAlbumRanking(
                   tracks,
                   trackData?.url || "",
                   artist,
                   album
                 );
+
+                if (response) {
+                  toast.success("Album ranking saved successfully!", {
+                    action: (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="ml-2"
+                        onClick={() => {
+                          navigator.clipboard.writeText(
+                            `${window.location.origin}/${response.id}`
+                          );
+                          toast.success("Link copied to clipboard!");
+                        }}
+                      >
+                        Copy Link
+                      </Button>
+                    ),
+                  });
+                } else {
+                  toast.error("Failed to save album ranking.");
+                }
               }
             }}
           >
