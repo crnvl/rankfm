@@ -1,51 +1,89 @@
-import { Album } from "@/types/lastFm";
+import { Album, DetailedAlbum } from "@/types/lastFm";
+import { format } from "path";
+import { json } from "stream/consumers";
 
 const lastFmApiKey = process.env.LASTFM_API_KEY;
 const lastFmApiUrl = "https://ws.audioscrobbler.com/2.0/";
 
-const searchAlbum = async (albumQuery: string) => {
-  const response = await fetch(
-    `${lastFmApiUrl}?method=album.search&album=${encodeURIComponent(
-      albumQuery
-    )}&api_key=${lastFmApiKey}&format=json`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
+export const externalRequests = {
+  searchAlbum: async (albumQuery: string) => {
+    const response = await fetch(
+      `${lastFmApiUrl}?method=album.search&album=${encodeURIComponent(
+        albumQuery
+      )}&api_key=${lastFmApiKey}&format=json`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch album data");
     }
-  );
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch album data");
-  }
+    const data = await response.json();
+    return data.results.albummatches.album;
+  },
+  getAlbumInfo: async (artist: string, name: string) => {
+    const response = await fetch(
+      `${lastFmApiUrl}?method=album.getinfo&api_key=${lastFmApiKey}&artist=${encodeURIComponent(
+        artist
+      )}&album=${encodeURIComponent(name)}&format=json`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-  const data = await response.json();
-  return data.results.albummatches.album;
-};
-
-const internalSearchAlbum = async (albumQuery: string): Promise<Album[]> => {
-  const response = await fetch(
-    `/api/v1/search?query=${encodeURIComponent(albumQuery)}`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
+    if (!response.ok) {
+      throw new Error("Failed to fetch album data");
     }
-  );
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch album data");
-  }
-
-  const data = await response.json();
-
-  return data as Album[];
+    const data = await response.json();
+    return data.album;
+  },
 };
 
 export const internalRequests = {
-  searchAlbum: internalSearchAlbum,
-};
+  searchAlbum: async (albumQuery: string): Promise<Album[]> => {
+    const response = await fetch(
+      `/api/v1/search?query=${encodeURIComponent(albumQuery)}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-export const externalRequests = {
-  searchAlbum,
+    if (!response.ok) {
+      throw new Error("Failed to fetch album data");
+    }
+
+    const data = await response.json();
+    return data as Album[];
+  },
+  getAlbumInfo: async (
+    artist: string,
+    name: string
+  ): Promise<DetailedAlbum> => {
+    const response = await fetch(
+      `/api/v1/album?artist=${encodeURIComponent(
+        artist
+      )}&album=${encodeURIComponent(name)}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch album data");
+    }
+
+    const data = await response.json();
+    return data as DetailedAlbum;
+  },
 };

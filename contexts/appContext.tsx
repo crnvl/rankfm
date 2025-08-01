@@ -1,21 +1,24 @@
 "use client";
 
+import Home from "@/app/page";
 import { Configure } from "@/components/configure";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 export enum AppState {
   INITIAL,
   READY,
 }
 
-interface IAppContext {
+export interface IAppContext {
   state: AppState;
-  albumId: number | null;
+  artist?: string;
+  album?: string;
 }
 
 const AppContext = createContext<IAppContext>({
   state: AppState.INITIAL,
-  albumId: null,
+  artist: "",
+  album: "",
 });
 
 export const useAppContext = () => useContext(AppContext);
@@ -25,13 +28,28 @@ interface IAppProviderProps {
 }
 
 export const AppProvider: React.FC<IAppProviderProps> = ({ children }) => {
-  const [state, setState] = useState(AppState.INITIAL);
+  const [contextData, setContextData] = useState<IAppContext>({
+    state: AppState.INITIAL,
+  });
   const [albumId, setAlbumId] = useState<number | null>(null);
 
+  // TODO: debug bypass context
+  useEffect(() => {
+    setContextData({
+      state: AppState.READY,
+      artist: "$uicideboy$",
+      album: "Long Term Effects of SUFFERING",
+    });
+  }, []);
+
   return (
-    <AppContext.Provider value={{ state, albumId }}>
+    <AppContext.Provider value={{ ...contextData }}>
       <main className="flex min-h-screen flex-col items-center justify-center p-8 gap-4">
-        {state === AppState.INITIAL ? <Configure setState={setState} /> : children}
+        {contextData.state === AppState.INITIAL ? (
+          <Configure setState={setContextData} />
+        ) : (
+          <Home setState={setContextData} />
+        )}
       </main>
     </AppContext.Provider>
   );
