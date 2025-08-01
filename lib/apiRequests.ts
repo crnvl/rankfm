@@ -105,18 +105,4 @@ export const internalRequests = {
     const data = await response.json();
     return data;
   },
-  getRanking: async (id: string): Promise<{ tracks: Track[] }> => {
-    const response = await fetch(`/api/v1/ranking/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch ranking data");
-    }
-
-    const data = await response.json();
-    return data;
-  },
 };
