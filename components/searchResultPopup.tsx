@@ -14,7 +14,7 @@ import {
 import Image from "next/image";
 
 interface SearchResultPopupProps {
-  album: Album;
+  album: Album | null;
   isOpen: boolean;
   onClose: () => void;
   onSelect: () => void;
@@ -27,6 +27,7 @@ export const SearchResultPopup = ({
   onSelect,
 }: SearchResultPopupProps) => {
   if (!isOpen) return null;
+  if (!album) return null;
 
   return (
     <AlertDialog
@@ -48,9 +49,10 @@ export const SearchResultPopup = ({
               height={300}
               className="rounded-lg"
             />
-            <p className="mt-2 text-lg font-semibold">{album.name}</p>
-            <p className="text-sm text-gray-500">by {album.artist}</p>
           </AlertDialogDescription>
+
+          <p className="mt-2 text-lg font-semibold">{album.name}</p>
+          <p className="text-sm text-gray-500">by {album.artist}</p>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={onClose}>Cancel</AlertDialogCancel>
