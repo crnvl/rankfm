@@ -35,38 +35,40 @@ export const Configure: React.FC<ConfigureProps> = ({ setState }) => {
 
   return (
     <>
-      <SearchResultPopup
-        album={alertData}
-        isOpen={alertOpen}
-        onClose={() => setAlertOpen(false)}
-        onSelect={() => {
-          setState({
-            ...appContext,
-            state: AppState.READY,
-            artist: alertData?.artist || "",
-            album: alertData?.name || "",
-          });
-        }}
-      />
-      <h1 className="text-center text-4xl font-extrabold tracking-tight text-balance">
-        Search for an album to get started
-      </h1>
-      <Separator />
-      <form
-        className="flex flex-col gap-4"
-        onSubmit={async (e) => {
-          e.preventDefault();
-          const formData = new FormData(e.currentTarget);
-          const album = formData.get("album") as string;
-          await handleButtonClick(album);
-        }}
-        suppressHydrationWarning
-      >
-        <Input placeholder="Enter album name" name="album" />
-        <Button className="w-full" type="submit" disabled={loading}>
-          {loading ? <Spinner size="small" show={true} /> : <p>Search</p>}
-        </Button>
-      </form>
+      <main className="flex min-h-screen flex-col items-center justify-center p-8 gap-4">
+        <SearchResultPopup
+          album={alertData}
+          isOpen={alertOpen}
+          onClose={() => setAlertOpen(false)}
+          onSelect={() => {
+            setState({
+              ...appContext,
+              state: AppState.READY,
+              artist: alertData?.artist || "",
+              album: alertData?.name || "",
+            });
+          }}
+        />
+        <h1 className="text-center text-4xl font-extrabold tracking-tight text-balance">
+          Search for an album to get started
+        </h1>
+        <Separator />
+        <form
+          className="flex flex-col gap-4"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+            const album = formData.get("album") as string;
+            await handleButtonClick(album);
+          }}
+          suppressHydrationWarning
+        >
+          <Input placeholder="Enter album name" name="album" />
+          <Button className="w-full" type="submit" disabled={loading}>
+            {loading ? <Spinner size="small" show={true} /> : <p>Search</p>}
+          </Button>
+        </form>
+      </main>
     </>
   );
 };

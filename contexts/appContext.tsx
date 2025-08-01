@@ -37,20 +37,18 @@ export const AppProvider: React.FC<IAppProviderProps> = ({ children }) => {
   useEffect(() => {
     setContextData({
       state: AppState.READY,
-      artist: "$uicideboy$",
-      album: "Long Term Effects of SUFFERING",
+      artist: "Porter Robinson",
+      album: "Nurture",
     });
   }, []);
 
   return (
     <AppContext.Provider value={{ ...contextData }}>
-      <main className="flex min-h-screen flex-col items-center justify-center p-8 gap-4">
-        {contextData.state === AppState.INITIAL ? (
-          <Configure setState={setContextData} />
-        ) : (
-          <Home setState={setContextData} />
-        )}
-      </main>
+      {contextData.state === AppState.INITIAL ? (
+        <Configure setState={setContextData} />
+      ) : (
+        <Home setState={setContextData} />
+      )}
     </AppContext.Provider>
   );
 };
