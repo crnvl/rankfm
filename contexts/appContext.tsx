@@ -1,6 +1,6 @@
 "use client";
 
-import Home from "@/app/page";
+import Home from "@/app/(home)/page";
 import { Configure } from "@/components/configure";
 import { createContext, useContext, useEffect, useState } from "react";
 

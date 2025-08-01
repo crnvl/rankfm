@@ -52,7 +52,7 @@ export const Configure: React.FC<ConfigureProps> = ({ setState }) => {
         <h1 className="text-center text-4xl font-extrabold tracking-tight text-balance">
           Search for an album to get started
         </h1>
-        <Separator />
+        <Separator className="max-w-2xl" />
         <form
           className="flex flex-col gap-4"
           onSubmit={async (e) => {
