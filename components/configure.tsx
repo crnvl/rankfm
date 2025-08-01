@@ -53,6 +53,7 @@ export const Configure: React.FC<ConfigureProps> = ({ setState }) => {
           const album = formData.get("album") as string;
           await handleButtonClick(album);
         }}
+        suppressHydrationWarning
       >
         <Input placeholder="Enter album name" name="album" />
         <Button className="w-full" type="submit" disabled={loading}>
