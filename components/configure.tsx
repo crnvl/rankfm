@@ -9,6 +9,7 @@ import { internalRequests } from "@/lib/apiRequests";
 import { SearchResultPopup } from "./searchResultPopup";
 import { Album } from "@/types/lastFm";
 import { AppState, IAppContext, useAppContext } from "@/contexts/appContext";
+import { toast } from "sonner";
 
 interface ConfigureProps {
   setState: (state: IAppContext) => void;
@@ -23,14 +24,19 @@ export const Configure: React.FC<ConfigureProps> = ({ setState }) => {
   const handleButtonClick = async (albumQuery: string) => {
     setLoading(true);
 
-    const albums = await internalRequests.searchAlbum(albumQuery);
+    try {
+      const albums = await internalRequests.searchAlbum(albumQuery);
 
-    setLoading(false);
+      setLoading(false);
 
-    console.log(`album id ${albums[0].mbid}`);
+      console.log(`album id ${albums[0].mbid}`);
 
-    setAlertData(albums[0]);
-    setAlertOpen(true);
+      setAlertData(albums[0]);
+      setAlertOpen(true);
+    } catch (error) {
+      toast.error("Error fetching album data. Please try again.");
+      setLoading(false);
+    }
   };
 
   return (

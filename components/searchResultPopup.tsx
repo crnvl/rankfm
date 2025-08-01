@@ -29,6 +29,8 @@ export const SearchResultPopup = ({
   if (!isOpen) return null;
   if (!album) return null;
 
+  const image = album.image[album.image.length - 1]["#text"];
+
   return (
     <div suppressHydrationWarning>
       <AlertDialog
@@ -43,13 +45,15 @@ export const SearchResultPopup = ({
               Is this the album you were looking for?
             </AlertDialogTitle>
             <AlertDialogDescription className="flex flex-col items-center">
-              <Image
-                src={album.image[album.image.length - 1]["#text"]}
-                alt={`${album.name} cover`}
-                width={300}
-                height={300}
-                className="rounded-lg"
-              />
+              {image && (
+                <Image
+                  src={image}
+                  alt={`${album.name} cover`}
+                  width={300}
+                  height={300}
+                  className="rounded-lg"
+                />
+              )}
             </AlertDialogDescription>
 
             <p className="mt-2 text-lg font-semibold">{album.name}</p>
