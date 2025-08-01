@@ -1,6 +1,12 @@
 import { getRanking } from "@/actions/rankAction";
 import { Separator } from "@radix-ui/react-separator";
+import { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "rank.fm - Album Tracks",
+  description: "Explore the ranked tracks of your favorite albums.",
+};
 
 export default async function RankingView({
   params,
@@ -10,6 +16,9 @@ export default async function RankingView({
   const { id } = await params;
 
   const ranking = (await getRanking(Number(id)))[0];
+
+  metadata.title = `${ranking.albumName} by ${ranking.artistName}`;
+  metadata.description = `Explore the ranked tracks of ${ranking.albumName} by ${ranking.artistName}.`;
 
   return (
     <>
