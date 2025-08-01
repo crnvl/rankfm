@@ -33,15 +33,6 @@ export const AppProvider: React.FC<IAppProviderProps> = ({ children }) => {
   });
   const [albumId, setAlbumId] = useState<number | null>(null);
 
-  // TODO: debug bypass context
-  useEffect(() => {
-    setContextData({
-      state: AppState.READY,
-      artist: "Porter Robinson",
-      album: "Nurture",
-    });
-  }, []);
-
   return (
     <AppContext.Provider value={{ ...contextData }}>
       {contextData.state === AppState.INITIAL ? (

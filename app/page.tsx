@@ -18,12 +18,13 @@ import {
 } from "@dnd-kit/core";
 import {
   arrayMove,
-  rectSortingStrategy,
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { SortableTrack } from "@/components/sortableTrack";
+import { Button } from "@/components/ui/button";
+import { Copy } from "lucide-react";
 
 interface HomeProps {
   setState: (state: IAppContext) => void;
@@ -73,38 +74,58 @@ export default function Home({ setState }: HomeProps) {
     const { active, over } = event;
 
     if (active.id !== over.id) {
-      const oldIndex = tracks.indexOf(active.id);
-      const newIndex = tracks.indexOf(over.id);
+      setTracks((tracks) => {
+        const oldIndex = active.id;
+        const newIndex = over.id;
 
-      setTracks((items) => arrayMove(items, oldIndex, newIndex));
+        return arrayMove(tracks, oldIndex, newIndex);
+      });
     }
   }
 
   return (
     <>
-      <nav className="top-0 left-0 w-full z-50 flex items-center p-4 shadow gap-4">
-        {trackData ? (
-          <Image
-            src={trackData?.image[2]["#text"]}
-            alt="RankFM Logo"
-            width={40}
-            height={40}
-            className="rounded-full"
-          />
-        ) : (
-          <Skeleton className="w-10 h-10 rounded-full" />
-        )}
-        {trackData ? (
-          <div className="flex flex-col">
-            <p className="text-md font-semibold">{trackData.name}</p>
-            <p className="text-sm text-gray-500">by {trackData.artist}</p>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-2">
-            <Skeleton className="w-48 h-5" />
-            <Skeleton className="w-32 h-4" />
-          </div>
-        )}
+      <nav className="top-0 left-0 w-full z-50 p-4 flex justify-between">
+        <div id="left" className="flex items-center gap-4">
+          {trackData ? (
+            <Image
+              src={trackData?.image[2]["#text"]}
+              alt={`${trackData.name} cover`}
+              width={40}
+              height={40}
+              className="rounded-full"
+            />
+          ) : (
+            <Skeleton className="w-10 h-10 rounded-full" />
+          )}
+          {trackData ? (
+            <div className="flex flex-col">
+              <p className="text-md font-semibold">{trackData.name}</p>
+              <p className="text-sm text-gray-500">by {trackData.artist}</p>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-2">
+              <Skeleton className="w-48 h-5" />
+              <Skeleton className="w-32 h-4" />
+            </div>
+          )}
+        </div>
+        <div id="right" className="flex items-center gap-4">
+          <Button
+            onClick={() => {
+              if (tracks.length > 0) {
+                internalRequests.saveAlbumRanking(
+                  tracks,
+                  trackData?.url || "",
+                  artist,
+                  album
+                );
+              }
+            }}
+          >
+            <Copy /> Share
+          </Button>
+        </div>
       </nav>
       <main>
         <div className="flex flex-col items-center justify-center p-8 gap-4">
@@ -121,7 +142,7 @@ export default function Home({ setState }: HomeProps) {
               >
                 <SortableContext
                   items={tracks.map((track, index) => index)}
-                  strategy={rectSortingStrategy}
+                  strategy={verticalListSortingStrategy}
                 >
                   {tracks.map((track, index) => (
                     <SortableTrack key={index} id={index}>

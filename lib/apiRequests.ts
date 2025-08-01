@@ -1,6 +1,4 @@
-import { Album, DetailedAlbum } from "@/types/lastFm";
-import { format } from "path";
-import { json } from "stream/consumers";
+import { Album, DetailedAlbum, Track } from "@/types/lastFm";
 
 const lastFmApiKey = process.env.LASTFM_API_KEY;
 const lastFmApiUrl = "https://ws.audioscrobbler.com/2.0/";
@@ -85,5 +83,26 @@ export const internalRequests = {
 
     const data = await response.json();
     return data as DetailedAlbum;
+  },
+  saveAlbumRanking: async (
+    tracks: Track[],
+    albumCoverUrl: string,
+    albumName: string,
+    artistName: string
+  ) => {
+    const response = await fetch(`/api/v1/save`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ tracks, albumCoverUrl, albumName, artistName }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to save album ranking");
+    }
+
+    const data = await response.json();
+    return data;
   },
 };
