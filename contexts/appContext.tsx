@@ -30,7 +30,9 @@ export const AppProvider: React.FC<IAppProviderProps> = ({ children }) => {
 
   return (
     <AppContext.Provider value={{ state, albumId }}>
-      {state === AppState.INITIAL ? <Configure /> : children}
+      <main className="flex min-h-screen flex-col items-center justify-center p-8 gap-4">
+        {state === AppState.INITIAL ? <Configure /> : children}
+      </main>
     </AppContext.Provider>
   );
 };
