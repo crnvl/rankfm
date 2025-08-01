@@ -3,7 +3,7 @@
 import { Configure } from "@/components/configure";
 import { createContext, useContext, useState } from "react";
 
-enum AppState {
+export enum AppState {
   INITIAL,
   READY,
 }
@@ -31,7 +31,7 @@ export const AppProvider: React.FC<IAppProviderProps> = ({ children }) => {
   return (
     <AppContext.Provider value={{ state, albumId }}>
       <main className="flex min-h-screen flex-col items-center justify-center p-8 gap-4">
-        {state === AppState.INITIAL ? <Configure /> : children}
+        {state === AppState.INITIAL ? <Configure setState={setState} /> : children}
       </main>
     </AppContext.Provider>
   );

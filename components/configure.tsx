@@ -8,8 +8,14 @@ import { Separator } from "./ui/separator";
 import { internalRequests } from "@/lib/apiRequests";
 import { SearchResultPopup } from "./searchResultPopup";
 import { Album } from "@/types/lastFm";
+import { AppState, useAppContext } from "@/contexts/appContext";
 
-export const Configure = () => {
+interface ConfigureProps {
+  setState: (state: AppState) => void;
+}
+
+export const Configure: React.FC<ConfigureProps> = ({ setState }) => {
+  const appContext = useAppContext();
   const [loading, setLoading] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertData, setAlertData] = useState<Album | null>(null);
@@ -31,8 +37,8 @@ export const Configure = () => {
         isOpen={alertOpen}
         onClose={() => setAlertOpen(false)}
         onSelect={() => {
-          console.log("Album selected:", alertData);
-          setAlertOpen(false);
+          appContext.albumId = parseInt(alertData?.mbid || "0");
+          setState(AppState.READY);
         }}
       />
       <h1 className="text-center text-4xl font-extrabold tracking-tight text-balance">
