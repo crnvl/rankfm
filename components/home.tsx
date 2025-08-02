@@ -24,7 +24,7 @@ import {
 } from "@dnd-kit/sortable";
 import { SortableTrack } from "@/components/sortableTrack";
 import { Button } from "@/components/ui/button";
-import { Copy } from "lucide-react";
+import { Save } from "lucide-react";
 
 interface HomeProps {
   setState: (state: IAppContext) => void;
@@ -145,7 +145,7 @@ export default function Home({ setState }: HomeProps) {
               }
             }}
           >
-            <Copy /> Share
+            <Save /> Save
           </Button>
         </div>
       </nav>
