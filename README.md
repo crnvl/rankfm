@@ -1,5 +1,18 @@
-# Docker
-```yml
+<center>
+  <h1>RankFM</h1>
+  <p>A modern music ranking application built with Next.js and Tailwind CSS.</p>
+</center>
+
+## Features
+- **Modern UI**: Built with Next.js and Tailwind CSS for a responsive design.
+- **Drizzle ORM**: Utilizes Drizzle ORM for efficient database interactions.
+- **PostgreSQL**: Uses PostgreSQL for robust data storage.
+- **Docker Support**: Easily deployable with Docker.
+
+## Docker-Compose
+To run the application with Docker, create a `docker-compose.yml` file in the root directory with the following content:
+
+```yaml
 services:
   db:
     image: postgres:latest
@@ -24,4 +37,10 @@ services:
 
 volumes:
   db_data:
+```
+
+and run:
+
+```bash
+docker-compose up
 ```
