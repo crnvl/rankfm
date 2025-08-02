@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "start": "next start",
+    "migrate": "drizzle-kit migrate",
+    "start": "npm run migrate && next start",
     "lint": "next lint"
   },
   "dependencies": {
