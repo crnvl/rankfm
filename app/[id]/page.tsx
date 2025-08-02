@@ -48,7 +48,7 @@ export default async function RankingView({
               <div className="my-2 w-full" key={index}>
                 <div className="flex items-center justify-between px-4 py-2 rounded border min-h-12">
                   <p className="text-sm font-medium w-full">
-                    <code className="block w-full ">{track}</code>
+                    <code className="block w-full ">{index + 1}. {track}</code>
                   </p>
                 </div>
               </div>
