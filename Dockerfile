@@ -1,9 +1,13 @@
 FROM node:24-alpine
 
-WORKDIR /app
-COPY . . 
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN npm ci
+WORKDIR /app
+
+COPY . .
+
+RUN npm install
 RUN npm run build
 
 CMD ["npm", "run", "start"]
