@@ -1,7 +1,7 @@
 "use client";
 
-import Home from "@/app/(home)/page";
 import { Configure } from "@/components/configure";
+import Home from "@/components/home";
 import { createContext, useContext, useEffect, useState } from "react";
 
 export enum AppState {
